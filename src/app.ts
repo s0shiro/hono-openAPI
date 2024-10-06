@@ -1,10 +1,6 @@
-import { OpenAPIHono } from '@hono/zod-openapi';
-import { notFound, onError } from 'stoker/middlewares';
+import createApp from '@/lib/create-app';
 
-import { pinoLogger } from './middlewares/pino-logger';
-
-const app = new OpenAPIHono();
-app.use(pinoLogger());
+const app = createApp();
 
 app.get('/', (c) => {
   return c.text('Hello Hono!');
@@ -12,10 +8,8 @@ app.get('/', (c) => {
 
 app.get('/error', (c) => {
   c.status(422);
+  c.var.logger.debug('Oh woww!');
   throw new Error('Ohh no!');
 });
-
-app.notFound(notFound);
-app.onError(onError);
 
 export default app;
