@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 export const tasks = sqliteTable('tasks', {
   id: integer('id', { mode: 'number' })
@@ -16,3 +17,5 @@ export const tasks = sqliteTable('tasks', {
     .default(sql`(CURRENT_TIMESTAMP)`)
     .$onUpdate(() => new Date()),
 });
+
+export const selectTaskSchema = createSelectSchema(tasks);
