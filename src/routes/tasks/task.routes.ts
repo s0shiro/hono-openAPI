@@ -4,6 +4,7 @@ import { jsonContent, jsonContentRequired } from 'stoker/openapi/helpers';
 import { createErrorSchema, IdParamsSchema } from 'stoker/openapi/schemas';
 
 import { insertTaskSchema, selectTaskSchema } from '@/db/schema';
+import { notFoundSchema } from '@/lib/constants';
 
 const tags = ['Tasks'];
 
@@ -42,6 +43,7 @@ export const getSingleTask = createRoute({
   tags,
   responses: {
     [HttpStatusCodes.OK]: jsonContent(selectTaskSchema, 'The selected tasks'),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'Task not found.'),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(createErrorSchema(IdParamsSchema), 'Invalid id error.'),
   },
 });

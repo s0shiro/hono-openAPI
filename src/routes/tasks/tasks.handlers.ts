@@ -1,4 +1,5 @@
 import * as HttpStatusCodes from 'stoker/http-status-codes';
+import * as HttpStatusPhrases from 'stoker/http-status-phrases';
 
 import type { AppRouteHandler } from '@/lib/types';
 
@@ -27,5 +28,11 @@ export const getSingle: AppRouteHandler<GetSingleRoute> = async (c) => {
       return operators.eq(fields.id, id);
     },
   });
+
+  if (!task) {
+    return c.json({
+      message: HttpStatusPhrases.NOT_FOUND,
+    }, HttpStatusCodes.NOT_FOUND);
+  }
   return c.json(task, HttpStatusCodes.OK);
 };
